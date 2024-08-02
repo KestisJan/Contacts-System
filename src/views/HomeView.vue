@@ -2,6 +2,5 @@
 
 
 <template>
-
-    <h3>Test</h3>
+    <h2>Kontaktų sistema</h2>
 </template>
