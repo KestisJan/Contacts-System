@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import logo from '../assets/Logo.png'
-import h6 from '../assets/H6.png'
-import UserLogo from '../assets/Male User.png'
+import logo from '../../assets/Logo.png'
+import h6 from '../../assets/H6.png'
+import UserLogo from '../../assets/Male User.png'
 
 
 </script>
@@ -18,7 +18,7 @@ import UserLogo from '../assets/Male User.png'
               </div>
               <div class="hidden md:block ml-10">
                 <div class="flex items-baseline space-x-20 p-2">
-                  <router-link to="#" class="text-white hover:bg-[#17305F] px-2 py-2 rounded-md text-2xl font-bold">Kontaktai</router-link>
+                  <router-link to="/" class="text-white hover:bg-[#17305F] px-2 py-2 rounded-md text-2xl font-bold">Kontaktai</router-link>
                   <router-link to="#" class="text-white hover:bg-[#17305F] px-3 py-2 rounded-md text-2xl font-bold">Įmonės</router-link>
                   <router-link to="#" class="text-white hover:bg-[#17305F] px-8 py-2 rounded-md text-2xl font-bold">Struktūra</router-link>
                   <router-link to="#" class="text-white hover:bg-[#17305F] px-12 py-2 rounded-md text-2xl font-bold">Paskyros</router-link>
