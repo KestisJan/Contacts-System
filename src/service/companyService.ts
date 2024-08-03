@@ -54,5 +54,22 @@ export default {
             console.error('Error fetching company by filter:', err);
             throw err;
         }
+    },
+
+    async getAllCompanies(): Promise<ICompany[]> {
+        try {
+            const result = await pb.collection('companies').getFullList();
+
+            return result.map(item => ({
+                id: item.id,
+                created: item.created,
+                updated: item.updated,
+                name: item.name,
+            })) as ICompany[];
+
+        } catch (err: any) {
+            console.error('Error fetching company list:', err);
+            throw err;
+        }
     }
 }

@@ -1,26 +1,42 @@
 <script setup lang="ts">
-import { onMounted } from 'vue';
+import { onMounted, ref } from 'vue';
 import { useCompanyStore } from '../../stores/CompanyStore';
 
-const store = useCompanyStore();
+const companyStore = useCompanyStore();
+const isLoading = ref(true)
 
-const loadCompanies = async () => {
-    await store.fetchCompanies();
 
-    console.log('Companies:', store.companies);
-    console.log('Companies:', store.totalCount);
+const loadData = async () => {
+    isLoading.value = true;
 
-}
+    try {
+        await companyStore.loadAllCompanies();
+
+        const response = companyStore.companies;
+
+        console.log(response)
+    } catch (err: any) {
+        console.error('Error loading data:', err)
+    } finally {
+        isLoading.value = false;
+    }
+   
+};
 
 onMounted(() => {
-    loadCompanies();
+    loadData()
 })
+
 
 </script>
 
 <template>
     <div>
-      
+        <p v-if="isLoading">Loading...</p>
+        <ul v-else>
+            <li v-for="company in companyStore.companies" :key="company.id">
+                {{ company.name }}
+            </li>
+        </ul>
     </div>
-
 </template>
