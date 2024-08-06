@@ -48,6 +48,7 @@ export const useCompanyStore = defineStore("companyStore", () => {
   return {
     companies:readonly(companies),
     totalCount:readonly(totalCount),
+    selectedCompany: readonly(selectedCompany),
     fetchCompanies,
     loadAllCompanies,
     getCompanyById,

@@ -14,7 +14,6 @@ const loadData = async () => {
 
         const response = companyStore.companies;
 
-        console.log(response)
     } catch (err: any) {
         console.error('Error loading data:', err)
     } finally {

@@ -6,6 +6,7 @@ import { IEmployee } from "../interface/IEmployee";
 export const useEmployeeStore = defineStore('employeeStore', () => {
     const employees = ref<IEmployee[]>([]);
     const totalCount = ref<number>(0);
+    const selectedEmployee = ref<IEmployee | null>(null);
 
     const fetchEmployees = async () => {
         try {
@@ -30,7 +31,7 @@ export const useEmployeeStore = defineStore('employeeStore', () => {
 
     const getEmployeeById = async (id: string) => {
         try {
-            return await genericService.getById<IEmployee>('employees', id);
+            selectedEmployee.value = await genericService.getById<IEmployee>('employees', id);
         } catch (err: any) {
             console.error(`Failed to fetch employee with ID ${id}`, err);
             throw err;
@@ -39,7 +40,7 @@ export const useEmployeeStore = defineStore('employeeStore', () => {
 
     const getEmployeeByFilter = async (filter: string) => {
         try {
-            return await genericService.getFirstListItem<IEmployee>('employees', filter);
+            selectedEmployee.value = await genericService.getFirstListItem<IEmployee>('employees', filter);
         } catch (err: any) {
             console.error(`Failed to fetch employee by filter`, err);
             throw err;
