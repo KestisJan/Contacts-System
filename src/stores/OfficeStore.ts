@@ -31,6 +31,7 @@ export const useOfficeStore = defineStore('officeStore', () => {
     const getOfficeById = async (id: string) => {
         try {
             selectedOffice.value = await genericService.getById<IOffice>('offices', id);
+            console.log(selectedOffice);
         } catch (err: any) {
             console.error(`Failed to fetch office by id ${id}: `, err)
         }
