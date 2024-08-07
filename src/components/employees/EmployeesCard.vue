@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { useEmployeeStore } from '../../stores/EmployeeStore';
-import { useOfficeStore } from '../../stores/OfficeStore';
+import { useOfficeStore } from '../../stores/OfficesStore';
 import { ref, onMounted } from 'vue';
 import { type IEmployee } from '../../interface/IEmployee';
 import account from '../../assets/Test Account.png';
-import { type IOffice } from '../../interface/IOffice';
+import { type IOffice } from '../../interface/IOffices';
 
 const employeeStore = useEmployeeStore();
 const officeStore = useOfficeStore();

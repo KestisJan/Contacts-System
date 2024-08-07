@@ -1,16 +1,16 @@
 import { defineStore } from "pinia";
 import genericService from "../service/genericService";
 import { readonly, ref } from "vue";
-import { IOffice } from '../interface/IOffice'
+import { IOffices } from '../interface/IOffices'
 
 export const useOfficeStore = defineStore('officeStore', () => {
-    const offices = ref<IOffice[]>([]);
+    const offices = ref<IOffices[]>([]);
     const totalCount = ref<number>(0);
-    const selectedOffice = ref<IOffice | null>(null);
+    const selectedOffice = ref<IOffices | null>(null);
 
     const fetchOffices = async () => {
         try {
-            const response = await genericService.getList<IOffice>('offices');
+            const response = await genericService.getList<IOffices>('offices');
             offices.value = response.items;
             totalCount.value = response.totalCount;
         } catch (err: any) {
@@ -20,7 +20,7 @@ export const useOfficeStore = defineStore('officeStore', () => {
 
     const loadAllOffices = async () => {
         try {
-            const allOffices = await genericService.getAll<IOffice>('offices');
+            const allOffices = await genericService.getAll<IOffices>('offices');
             offices.value = allOffices.items;
             totalCount.value = allOffices.totalCount;
         } catch (err: any) {
@@ -30,7 +30,7 @@ export const useOfficeStore = defineStore('officeStore', () => {
 
     const getOfficeById = async (id: string) => {
         try {
-            selectedOffice.value = await genericService.getById<IOffice>('offices', id);
+            selectedOffice.value = await genericService.getById<IOffices>('offices', id);
             console.log(selectedOffice);
         } catch (err: any) {
             console.error(`Failed to fetch office by id ${id}: `, err)
@@ -39,7 +39,7 @@ export const useOfficeStore = defineStore('officeStore', () => {
 
     const getOfficeByFilter = async (filter: string) => {
         try {
-            selectedOffice.value = await genericService.getFirstListItem<IOffice>('offices', filter);
+            selectedOffice.value = await genericService.getFirstListItem<IOffices>('offices', filter);
         } catch (err: any) {
             console.error(`Failed to fetch office with filter ${filter}:`, err);
         }

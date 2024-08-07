@@ -1,4 +1,4 @@
-export interface IOffice {
+export interface IOffices {
     id: string;
     name: string;
     street: string;
