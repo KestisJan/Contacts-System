@@ -4,14 +4,14 @@ import { useOfficeStore } from '../../stores/OfficesStore';
 import { ref, onMounted } from 'vue';
 import { type IEmployee } from '../../interface/IEmployee';
 import account from '../../assets/Test Account.png';
-import { type IOffice } from '../../interface/IOffices';
+import { type IOffices } from '../../interface/IOffices';
 
 const employeeStore = useEmployeeStore();
 const officeStore = useOfficeStore();
 const isLoading = ref(true);
 
 const employees = ref<IEmployee[]>([]);
-const offices = ref<Record<string, IOffice>>({});
+const offices = ref<Record<string, IOffices>>({});
 
 const loadData = async () => {
     isLoading.value = true;
@@ -43,6 +43,8 @@ const loadData = async () => {
 onMounted(() => {
     loadData();
 });
+
+console.log(employees)
 </script>
 
 
