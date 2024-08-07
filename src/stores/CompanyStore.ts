@@ -14,7 +14,7 @@ export const useCompanyStore = defineStore("companyStore", () => {
       companies.value = response.items;
       totalCount.value = response.totalCount;
     } catch (err: any) {
-      console.error('Failed to fetch companies', err)
+      console.error('Failed to fetch companies: ', err)
     }
   };
 
