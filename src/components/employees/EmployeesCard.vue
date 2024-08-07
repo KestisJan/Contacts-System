@@ -48,28 +48,38 @@ onMounted(() => {
 
 <template>
     <div v-if="!isLoading">
-        <div v-for="employee in employees" :key="employee.id" class="employee-card">
-            <header>
-                <div>
-                    <img :src="account" alt="account" class="" style=""/>
-                </div>
-                <div>
-                    <h3>{{ employee.name }} {{ employee.surname }}</h3>
-                    <h4>Position: {{ employee.position }}</h4>
-                </div>
-            </header>
-            <section>
-                <h4>Telefono nr. {{ employee.phone_number }}</h4>
-                <h4>El. pastas: {{ employee.email }}</h4>
-                <h4>Adresas:
-                    <template v-if="employee.office_id && offices[employee.office_id]">
-                        {{ offices[employee.office_id].name }}
-                    </template>
-                    <template v-else>
-                        No address available
-                    </template>
-                </h4>
-            </section>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            <div 
+                v-for="employee in employees" 
+                :key="employee.id" 
+                class="employee-card bg-white shadow-md rounded-lg p-4 flex flex-col space-y-4"
+            >
+                <header class="flex items-center space-x-4">
+                    <div>
+                        <img 
+                            :src="account" 
+                            alt="account" 
+                            class="h-16 w-16 rounded-full object-cover"
+                        />
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-semibold">{{ employee.name }} {{ employee.surname }}</h3>
+                        <h4 class="text-sm text-gray-500">Position: {{ employee.position }}</h4>
+                    </div>
+                </header>
+                <section class="text-sm text-gray-600 space-y-1">
+                    <h4>Telefono nr.: {{ employee.phone_number }}</h4>
+                    <h4>El. pastas: {{ employee.email }}</h4>
+                    <h4>Adresas:
+                        <template v-if="employee.office_id && offices[employee.office_id]">
+                            {{ offices[employee.office_id].name }}
+                        </template>
+                        <template v-else>
+                            No address available
+                        </template>
+                    </h4>
+                </section>
+            </div>
         </div>
     </div>
 </template>
