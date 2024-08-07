@@ -22,7 +22,7 @@ export const useDepartmentStore = defineStore('departmentStore', () => {
 
     const loadDeparments = async () => {
         try {
-            const allDepartments = await genericService.getList<IDepartment>('departments');
+            const allDepartments = await genericService.getAll<IDepartment>('departments');
             departments.value = allDepartments.items;
             totalCount.value = allDepartments.totalCount;
         } catch (err: any) {
