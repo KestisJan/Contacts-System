@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useEmployeeStore } from '../../stores/EmployeeStore';
 import { useOfficeStore } from '../../stores/OfficesStore';
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, watch, defineProps } from 'vue';
 import { type IEmployee } from '../../interface/IEmployee';
 import account from '../../assets/Test Account.png';
 import { type IOffices } from '../../interface/IOffices';
@@ -9,6 +9,12 @@ import { type IOffices } from '../../interface/IOffices';
 const employeeStore = useEmployeeStore();
 const officeStore = useOfficeStore();
 const isLoading = ref(true);
+
+const props = defineProps<{
+    filteredEmployees: IEmployee[];
+}>();
+
+console.log('Filtered Empployee: ', props.filteredEmployees);
 
 const employees = ref<IEmployee[]>([]);
 const offices = ref<Record<string, IOffices>>({});
@@ -32,21 +38,23 @@ const loadData = async () => {
                 }
             })
         );
-
     } catch (err: any) {
         console.error('Error loading data: ', err);
     } finally {
         isLoading.value = false;
     }
-}
+};
+
+watch(() => props.filteredEmployees, (newEmployees) => {
+    console.log('Updated:', newEmployees);
+    employees.value = newEmployees;
+});
+
 
 onMounted(() => {
     loadData();
 });
-
-console.log(employees)
 </script>
-
 
 <template>
     <div v-if="!isLoading">
@@ -85,4 +93,3 @@ console.log(employees)
         </div>
     </div>
 </template>
-

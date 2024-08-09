@@ -8,9 +8,9 @@ export const useEmployeeStore = defineStore('employeeStore', () => {
     const totalCount = ref<number>(0);
     const selectedEmployee = ref<IEmployee | null>(null);
 
-    const fetchEmployees = async () => {
+    const fetchEmployees = async (filter: string = '', sort: string = '') => {
         try {
-            const response = await genericService.getList<IEmployee>('employees');
+            const response = await genericService.getList<IEmployee>('employees', filter, sort);
             employees.value = response.items;
             totalCount.value = response.totalCount;
         } catch (err: any) {
@@ -40,7 +40,13 @@ export const useEmployeeStore = defineStore('employeeStore', () => {
 
     const getEmployeeByFilter = async (filter: string) => {
         try {
-            selectedEmployee.value = await genericService.getFirstListItem<IEmployee>('employees', filter);
+            const employee = await genericService.getFirstListItem<IEmployee>('employees', filter);
+            
+            if (!employee) {
+                return null;
+            }
+
+            return employee;
         } catch (err: any) {
             console.error(`Failed to fetch employee by filter`, err);
             throw err;

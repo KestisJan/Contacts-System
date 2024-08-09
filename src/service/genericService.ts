@@ -27,7 +27,7 @@ export default {
         }
     },
 
-    async getList<T>(collectionName: string, page: number = 1, perPage: number = 25, filter: string = '', sort: string = ''): Promise<IGenericResponse<T>> {
+    async getList<T>(collectionName: string, filter: string = '',  sort: string = '', page: number = 1, perPage: number = 25 ): Promise<IGenericResponse<T>> {
         try {
             const result = await pb.collection(collectionName).getList(page, perPage, { filter, sort });
             return {
@@ -40,13 +40,19 @@ export default {
         }
     },
 
-    async getFirstListItem<T>(collectionName: string, filter: string): Promise<T> {
+    async getFirstListItem<T>(collectionName: string, filter: string): Promise<T | null> {
         try {
             const result = await pb.collection(collectionName).getFirstListItem(filter);
             return result as T;
         } catch (err: any) {
-            console.error(`Error fetching first item from collection ${collectionName} with filter ${filter}:`, err);
-            throw err;
+
+            if(err.response.code === 404) {
+                console.warn('Item not found.')
+                return null;
+            } else {
+                console.error(`Error fetching first item from collection ${collectionName} with filter ${filter}:`, err);
+                throw err;
+            }
         }
     }
 };
