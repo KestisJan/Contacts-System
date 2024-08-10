@@ -7,14 +7,15 @@ import FilterBar from '../components/common/FilterBar.vue';
 import { type IEmployee } from '../interface/IEmployee';
 
 const filteredEmployees = ref<IEmployee[]>([]);
-const search = ref<string>('');
+const searchQuery = ref<string>('');
 
 function handleUpdateEmployees(newEmployees: IEmployee[]) {
     filteredEmployees.value = newEmployees;
 }
 
 function handleSearch(newSearch: string) {
-    search.value = newSearch
+    searchQuery.value = newSearch
+    console.log(searchQuery)
 }
 
 </script>
@@ -22,7 +23,7 @@ function handleSearch(newSearch: string) {
 
 <template>
     <h2>Kontaktų sistema</h2>
-    <FilterBar @update-employees="handleUpdateEmployees" />
+    <FilterBar @update-employees="handleUpdateEmployees" :searchQuery="searchQuery"/>
     <SearchBar @search="handleSearch"/>
     <EmployeesCard :filteredEmployees="filteredEmployees"/>
 </template>

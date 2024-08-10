@@ -14,7 +14,6 @@ const props = defineProps<{
     filteredEmployees: IEmployee[];
 }>();
 
-console.log('Filtered Empployee: ', props.filteredEmployees);
 
 const employees = ref<IEmployee[]>([]);
 const offices = ref<Record<string, IOffices>>({});
@@ -46,7 +45,6 @@ const loadData = async () => {
 };
 
 watch(() => props.filteredEmployees, (newEmployees) => {
-    console.log('Updated:', newEmployees);
     employees.value = newEmployees;
 });
 

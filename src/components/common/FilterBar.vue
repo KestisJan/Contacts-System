@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref, watch, readonly } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import { useCompanyStore } from '../../stores/CompanyStore';
 import { useEmployeeStore } from '../../stores/EmployeeStore';
 import { useOfficeStore } from '../../stores/OfficesStore';
@@ -37,7 +37,16 @@ const filters = ref<{ [key: string]: string }>({});
 
 const emit = defineEmits<{
   (event: 'update-employees', employees: IEmployee[]):void;
+  (event: 'filter-change', filters: Record<string, string>): void
 }>();
+
+const props = defineProps<{
+  searchQuery: string;
+}>();
+
+watch(() => props.searchQuery, (newSearchQuery) => {
+  console.log('Updated searchQuery in FilterBar:', newSearchQuery)
+})
 
 onMounted(async () => {
   try {
@@ -61,14 +70,22 @@ onMounted(async () => {
 
 
 
-function buildFilterString(filters: Record<string, string>): string {
-    return Object.entries(filters)
+function buildFilterString(filters: Record<string, string>, searchQuery: string): string {
+    const filterString = Object.entries(filters)
         .map(([key, value]) => `${key}="${value}"`)
         .join(' && ');
+
+        const nameFilter = searchQuery ? `name="${searchQuery}"` : '';
+
+        if (filterString && nameFilter) {
+            return `${filterString} && ${nameFilter}`;
+        }
+
+        return filterString || nameFilter;
 }
 
 async function applyFilters() {
-  const filteredString = buildFilterString(filters.value)
+  const filteredString = buildFilterString(filters.value, props.searchQuery)
 
   try {
     await employeeStore.fetchEmployees(filteredString);
@@ -88,44 +105,19 @@ async function applyFilters() {
 }
 
 
-function resetOtherFilters(except: 'company' | 'office' | 'division' | 'department' | 'group') {
-    if (except !== 'company') selectedCompany.value = null;
-    if (except !== 'office') selectedOffice.value = null;
-    if (except !== 'division') selectedDivision.value = null;
-    if (except !== 'department') selectedDepartment.value = null;
-    if (except !== 'group') selectedGroup.value = null;
-}
 
 
 watch([selectedCompany, selectedOffice, selectedDivision, selectedDepartment, selectedGroup], async ([newCompany, newOffice, newDivision, newDepartment, newGroup]) => {
     filters.value = {};
 
-    if (newCompany) {
-        filters.value['company_id'] = newCompany.id;
-        resetOtherFilters('company')
-    }
+    if (newCompany) filters.value['company_id'] = newCompany.id;
+    if (newOffice) filters.value['office_id'] = newOffice.id;
+    if (newDivision) filters.value['division_id'] = newDivision.id;
+    if (newDepartment) filters.value['department_id'] = newDepartment.id;
+    if (newGroup) filters.value['group_id'] = newGroup.id;
 
-    if (newOffice) {
-        filters.value['office_id'] = newOffice.id;
-        resetOtherFilters('office')
-    }
-
-    if (newDivision) {
-        filters.value['division_id'] = newDivision.id;
-        resetOtherFilters('division')
-    }
-
-    if (newDepartment) {
-        filters.value['department_id'] = newDepartment.id;
-        resetOtherFilters('department')
-    }
-
-    if (newGroup) {
-        filters.value['group_id'] = newGroup.id;
-        resetOtherFilters('group')
-    }
-
-    await applyFilters();
+    applyFilters();
+    emit('filter-change', filters.value);
 }, { deep: true });
 
 

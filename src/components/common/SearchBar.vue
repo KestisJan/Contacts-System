@@ -1,16 +1,9 @@
 <script setup lang="ts">
 import { ref, defineEmits, watch } from 'vue';
-import { useEmployeeStore } from '../../stores/EmployeeStore';
-import { ISearchField } from '../../interface/ISearchField'
 
-const employeeStore = useEmployeeStore()
 const searchQuery = ref('');
 const timeoutId = ref<number | null>(null);
 
-
-const props = defineProps<{
-    searchField: ISearchField[];
-}>();
 
 const emit = defineEmits<{
     (event: 'search', query: string): void;
